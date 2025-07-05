@@ -1,24 +1,22 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import NameEntry from "./NameEntry";
 import ProfileEntry from "./ProfileEntry";
 
 export default function PlayerForm(){
-  const [formsteps, setformsteps] = useState(0);  
-  const [PlayerName, setPlayerName] = useState<string>('');  // For example, storing user input
+    const [formsteps, setformsteps] = useState(0);  
+    const [PlayerName, setPlayerName] = useState<string>('');
+    const [playerAvatar, setPlayerAvatar] = useState<Record<string, any>>({});
 
   const handleForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the default form submission behavior (page reload)
-    console.log(formsteps)
-
-    if (formsteps === 1){
-      console.log(PlayerName)
-    }
-
     setformsteps(formsteps + 1)
   };
 
 
-
+    useEffect(() => {
+    console.log(PlayerName)
+    console.log('playerAvatar updated:', playerAvatar);
+    }, [playerAvatar]);
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,11 +28,11 @@ export default function PlayerForm(){
 
               {formsteps === 0 ? 
 
-                <NameEntry name={PlayerName} event={handleInputChange}></NameEntry>
+                <NameEntry  name={PlayerName} event={handleInputChange}></NameEntry>
 
               : 
 
-                <ProfileEntry></ProfileEntry>
+                <ProfileEntry setavatar={setPlayerAvatar}></ProfileEntry>
 
                 }
 
