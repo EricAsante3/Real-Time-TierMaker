@@ -5,7 +5,7 @@ import ProfileEntry from "./ProfileEntry";
 export default function PlayerForm(){
     const [formsteps, setformsteps] = useState(0);  
     const [PlayerName, setPlayerName] = useState<string>('');
-    const [playerAvatar, setPlayerAvatar] = useState<Record<string, any>>({});
+    const [playerAvatar, setPlayerAvatar] = useState<Record<string, unknown>>({});
 
   const handleForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the default form submission behavior (page reload)
@@ -16,7 +16,7 @@ export default function PlayerForm(){
     useEffect(() => {
     console.log(PlayerName)
     console.log('playerAvatar updated:', playerAvatar);
-    }, [playerAvatar]);
+    }, [playerAvatar,PlayerName]);
 
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

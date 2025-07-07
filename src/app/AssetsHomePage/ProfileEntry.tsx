@@ -1,12 +1,12 @@
 import Avatar, {genConfig} from 'react-nice-avatar';
 
 interface info {
-    setavatar: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+    setavatar: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
 }
 
 
 export default function ProfileEntry({setavatar}: info) {
-    var kyla = {
+    const kyla = {
     sex: "woman",
     faceColor: "#6d3800",
     earSize: "small",
@@ -22,7 +22,7 @@ export default function ProfileEntry({setavatar}: info) {
     bgColor: "linear-gradient(135deg, #009B3A, #FED100, #000000)", // saffron-white-green (Indian flag)
   }
 
-  var me = {
+  const me = {
     sex: "man",
     faceColor: "#3c2004",
     earSize: "small",
@@ -38,7 +38,7 @@ export default function ProfileEntry({setavatar}: info) {
     bgColor: "linear-gradient(135deg, #EF3340, #FFD100, #009739)", // saffron-white-green (Indian flag)
   }
 
-  var colin = {
+  const colin = {
     sex: "man",
     faceColor: "#F9C9B6",
     earSize: "small",
@@ -54,7 +54,7 @@ export default function ProfileEntry({setavatar}: info) {
     bgColor: "linear-gradient(135deg, #0032A0, #BF0D3E, #FFFFFF, #FED141)", // saffron-white-green (Indian flag)
   }
 
-const ethan = {
+  const ethan = {
     sex: "man", // or "woman"
     faceColor: "#8D5524", // medium/dark brown skin tone
     earSize: "small",
@@ -134,7 +134,7 @@ const ethan = {
     hatStyle: "none",
   })
 
-    function handleDivClick(avatar: Record<string, any>) {
+    function handleDivClick(avatar: Record<string, unknown>) {
         setavatar(avatar)
         const submitBtn = document.getElementById("hiddenSubmit");
         submitBtn?.click();
@@ -171,7 +171,7 @@ const ethan = {
 
                   <figure className='flex flex-col items-center justify-center space-y-2'>
                     <div className="w-32 h-32 rounded-full bg-[linear-gradient(135deg,_#FF6B6B,_#6A82FB,_#F9ED69)]"  />
-                    <figcaption>John Doe</figcaption>
+                    <figcaption>Joel Duah</figcaption>
                   </figure>
 
 

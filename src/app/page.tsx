@@ -1,7 +1,5 @@
 "use client";  // <-- Add this line at the top
 
-import Image from "next/image";
-import { useState } from "react";
 import PlayerForm from "./AssetsHomePage/PlayerForm";
 
 
