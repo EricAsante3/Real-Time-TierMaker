@@ -1,14 +1,14 @@
 "use client";  // <-- Add this line at the top
 
-import {CollisionDetection, DndContext, DragStartEvent, pointerWithin, rectIntersection, UniqueIdentifier} from '@dnd-kit/core';
+import {closestCenter, CollisionDetection, DndContext, DragEndEvent, DragStartEvent, DragOverEvent, getFirstCollision, pointerWithin, rectIntersection, UniqueIdentifier} from '@dnd-kit/core';
 import Draggable from './AssetsDrag/Draggable';
 import { DragOverlay } from '@dnd-kit/core';
 import TeirRow from './AssetsDrag/TeirRow';
 import Card from './AssetsDrag/Card';
 import { CardList } from './AssetsDrag/types';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import CardHomeBase from './AssetsDrag/CardHomeBase';
-import { SortableContext } from '@dnd-kit/sortable';
+import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { Data } from './AssetsDrag/types';
 
 
@@ -18,13 +18,40 @@ import { Data } from './AssetsDrag/types';
     ["S"]: {
       data: "S",
       children: [
-        { id: "todo-item-1", name: "Todo 1" },
-        { id: "todo-item-2", name: "Todo 2" },
-        { id: "todo-item-3", name: "Todo 3" },
-        { id: "todo-item-4", name: "Todo 4" },
       ],
     },
 
+    ["A"]: {
+      data: "A",
+      children: [
+      ],
+    },
+
+    ["B"]: {
+      data: "B",
+      children: [
+      ],
+    },
+
+    ["C"]: {
+      data: "C",
+      children: [
+      ],
+    },
+
+    ["D"]: {
+      data: "D",
+      children: [
+      ],
+    },
+
+
+    ["F"]: {
+      data: "F",
+      children: [
+      ],
+    },
+  
     ["Home"]: {
       data: "Home",
       children: [
@@ -39,23 +66,9 @@ import { Data } from './AssetsDrag/types';
 
 export default function Home() {
   const [data, setData] = useState<Data<string, string>>(initialData);
-  const [Active, SetActive] = useState<UniqueIdentifier>()
+  const [Active, SetActive] = useState<UniqueIdentifier | null>()
 
-  const [Scards, setScards] = useState<CardList>([
-    {id: 1, name: "Card A"},
-    {id: 2, name: "Card B"},
-    {id: 3, name: "Card C"},
-  ])
-  const [Homecards, setHomecards] = useState<CardList>(
-    [
-  {id: 4, name: "Luffy"},
-  {id: 5, name: "Zoro"},
-  {id: 6, name: "Sanji"},
-  {id: 7, name: "Nami"},
-  {id: 8, name: "Usopp"},
-
-]
-  )
+  const lastoverid = useRef<UniqueIdentifier | null>(null)
 
 
 
@@ -63,7 +76,19 @@ export default function Home() {
 
 
 
+  function findColumnId(id: UniqueIdentifier) {
+    if (data[id]) {
+      return id;
+    }
 
+
+    const activeColumnId = Object.keys(data).find((columnId) =>
+      data[columnId].children.some((item) => item.id === id)
+    );
+
+
+    return activeColumnId;
+  }
 
 
 
@@ -88,15 +113,157 @@ export default function Home() {
     const pointerWithinList = pointerWithin(args)
     const rectIntersectionList = rectIntersection(args)
 
-    console.log("pointerWithinList", pointerWithinList)
-    console.log("rectIntersectionList", rectIntersectionList)
+
 
     const intersection = 
       pointerWithinList.length > 0 ? pointerWithinList : rectIntersectionList
 
-    return [ ...intersection ]
+    let overId = getFirstCollision(intersection, "id")
+    console.log("overid", overId)
+    
+    if (overId) {
+
+      if (data[overId]) {
+        const columItems = data[overId].children
+
+        if (columItems.length > 0){
+          const newDropContainer = args.droppableContainers.filter(droppable => droppable.id !== overId && columItems.find(item => item.id === droppable.id))
+          const clostestbycenter = closestCenter({...args, droppableContainers: newDropContainer})
+          overId = clostestbycenter[0].id
+        }
+
+
+      }
+
+      lastoverid.current = overId
+      return [ { id: overId } ]
+    }
+    
+    return lastoverid.current ? [ { id: lastoverid.current } ] : []
 
   }
+
+  function handleDragEnd(event: DragEndEvent) {
+    const activeId = event.active.id
+    const overId = event.over?.id
+
+
+    const activeColumnId = findColumnId(activeId)
+    
+    if (!activeColumnId){
+      SetActive(null)
+      console.log("sasa")
+      return
+    }
+
+    if (!overId){
+      SetActive(null)
+      return
+    }
+
+    const overColumnId = findColumnId(overId)
+
+    if (overColumnId && activeColumnId && activeColumnId === overColumnId){
+
+      const activeIndex = data[activeColumnId].children.findIndex(
+        (item) => item.id === activeId
+      );
+
+      const overIndex = data[overColumnId].children.findIndex(
+        (item) => item.id === overId
+      );
+
+      if (activeIndex !== overIndex) {
+        setData((data) => {
+          const newOverColumnChildren = arrayMove(
+            data[overColumnId].children,
+            activeIndex,
+            overIndex
+          );
+
+          const newData = {
+            ...data,
+            [overColumnId]: {
+              ...data[overColumnId],
+              children: newOverColumnChildren,
+            },
+          };
+
+          return newData;
+        });
+      }
+
+    }
+
+    
+    SetActive(null)
+  }
+
+
+
+
+
+
+  function handleDragOver({ active, over }: DragOverEvent) {
+      const overId = over?.id;
+      const activeId = active.id;
+      if (!overId || activeId in data) {
+        return;
+      }
+      const activeColumnId = findColumnId(activeId);
+      const overColumnId = findColumnId(overId);
+
+      // Handle dragging an item from one column to another
+      if (activeColumnId && overColumnId && activeColumnId !== overColumnId) {
+        setData((data) => {
+          const activeItems = data[activeColumnId].children;
+          const overItems = data[overColumnId].children;
+
+          const activeIndex = activeItems.findIndex(
+            (item) => item.id === activeId
+          );
+          const overIndex = overItems.findIndex((item) => item.id === overId);
+
+          let newIndex: number;
+
+        // (Custom collision algorithm returns a column ID as overId only if the column has no items)
+        if (overId in data) {
+          newIndex = overItems.length + 1; // add one for working with Array.prototype.slice later easily
+        } else {
+          // over an item, need to check if the dragging item is below or above
+          // the over item
+          const isBelowOverItem =
+            over &&
+            active.rect.current.translated &&
+            active.rect.current.translated.top >
+              over.rect.top + over.rect.height;
+          const modifier = isBelowOverItem ? 1 : 0;
+
+          newIndex =
+            overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+        }
+
+        return {
+          ...data,
+          [activeColumnId]: {
+            ...data[activeColumnId],
+            children: activeItems.filter((item) => item.id !== activeId),
+          },
+          [overColumnId]: {
+            ...data[overColumnId],
+            children: [
+              ...overItems.slice(0, newIndex),
+              activeItems[activeIndex],
+              ...overItems.slice(newIndex),
+            ],
+          },
+        };
+      });
+    }
+  }
+
+
+
 
   return (
     <div className="relative grid grid-rows-[1fr_10px] items-center justify-items-center min-h-screen p-8  gap-16  font-sans">
@@ -106,11 +273,7 @@ export default function Home() {
 
 
       <main className=" flex flex-col row-start-1 justify-center items-center w-full min-h-full h-fit sm:items-start ">
-        <DndContext id="teir-list" onDragEnd={(event) => {
-          console.log("active", event.active)
-          console.log("over", event.over)
-
-        }} onDragStart={handleondragstart} collisionDetection={customDetection}>
+        <DndContext id="teir-list" onDragEnd={handleDragEnd} onDragStart={handleondragstart} collisionDetection={customDetection} onDragOver={handleDragOver}>
 
 
 
@@ -124,12 +287,25 @@ export default function Home() {
 
             </TeirRow>
           
+            <TeirRow idvalue={data["A"].data} Cards={data["A"].children}>
 
+            </TeirRow>
 
+            <TeirRow idvalue={data["B"].data} Cards={data["B"].children}>
 
+            </TeirRow>
 
+            <TeirRow idvalue={data["C"].data} Cards={data["C"].children}>
 
+            </TeirRow>
 
+            <TeirRow idvalue={data["D"].data} Cards={data["D"].children}>
+
+            </TeirRow>
+
+            <TeirRow idvalue={data["F"].data} Cards={data["F"].children}>
+
+            </TeirRow>
 
 
           </div>
