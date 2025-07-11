@@ -1,22 +1,23 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { useRef, CSSProperties, Ref } from "react";
 import {CSS} from '@dnd-kit/utilities';
-
+import { UniqueIdentifier } from "@dnd-kit/core";
 
 type sortableProps = Pick< ReturnType<typeof useSortable>, "attributes" | "listeners">
 
 
 interface props extends sortableProps {
-    id: number
+    id: UniqueIdentifier
     name: string
     ref?: Ref<HTMLDivElement>
     style?: CSSProperties
+    className: string
     
 } 
 
 
 
-export default function Card({id, name, style, ref, attributes, listeners}: props) {
+export default function Card({id, className, name, style, ref, attributes, listeners}: props) {
 
 
 
@@ -30,7 +31,7 @@ export default function Card({id, name, style, ref, attributes, listeners}: prop
      //  };
   
   return (
-    <div ref={ref} {...attributes} {...listeners} style={style} className="h-16 w-16 bg-green-200 text-black">{name}</div>
+    <div ref={ref} {...attributes} {...listeners} style={style} className={className}>{name}</div>
 
   );
 }
