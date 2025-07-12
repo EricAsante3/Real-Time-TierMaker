@@ -8,22 +8,40 @@ import SignalRService from "../Data/Socket";
 import PlayerForm from "./AssetsHomePage/PlayerForm";
 import { json } from "stream/consumers";
 
-
-
+type joiners = {
+  [userId: string]: {
+    name: string;
+    avatar: string; // still a string, unless you parse it
+  };
+};
 
 
 export default function Home() {
+
+
+  const [OnlineUsers, setOnlineUsers] = useState<joiners>({});
+  
+
+  function handleNewjoiners(ClientsInfo: joiners){
+    console.log("Testinggggg",ClientsInfo)
+    setOnlineUsers(ClientsInfo)
+  }
+
+
   const signalRServiceRef = useRef<SignalRService | null>(null);
+
 
   useEffect(() => {
     if (!(signalRServiceRef.current)){
       const service = new SignalRService("3443");
       signalRServiceRef.current = service;
+      service.on("NewJoiner", handleNewjoiners)
     }
 
 
     
     return () => {
+
     };
   }, []);
 
@@ -37,7 +55,7 @@ export default function Home() {
     useEffect(() => {
       if (!(formsteps < 2)) {
         if(signalRServiceRef.current){
-        signalRServiceRef.current.invoke("Join", [PlayerName, JSON.stringify(playerAvatar)])}
+        signalRServiceRef.current.invoke("Join", PlayerName, JSON.stringify(playerAvatar))}
         console.log("Playerr", playerAvatar)
       }
     }, [playerAvatar])
@@ -66,7 +84,7 @@ export default function Home() {
       </footer>
     </div> : 
       
-    <TeirList></TeirList>}
+    <TeirList OnlineUsers={OnlineUsers} signalRServiceRef={signalRServiceRef}></TeirList>}
 
     
     </>

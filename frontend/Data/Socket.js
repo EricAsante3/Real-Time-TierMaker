@@ -34,8 +34,8 @@ export default class SignalRService {
 
   invoke(method, ...args) {
     if (this.connection.state === signalR.HubConnectionState.Connected) {
-      console.log("helpppp",...args[0])
-      return this.connection.invoke(method, "hhh", "dfd");
+      console.log("backkk", ...args)
+      return this.connection.invoke(method, ...args);
     } else {
       console.warn("SignalR not connected. Cannot invoke:", method);
     }
