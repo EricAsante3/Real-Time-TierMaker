@@ -18,7 +18,6 @@ type joiners = {
 
 
 export default function Home() {
-  const [uniqueID, setuniqueID] = useState<string>();
   const [OnlineUsers, setOnlineUsers] = useState<joiners>({});
   
 
@@ -36,7 +35,9 @@ export default function Home() {
       const service = new SignalRService("3443");
       signalRServiceRef.current = service;
       service.on("NewJoiner", handleNewjoiners)
-      service.on("JoinConfirmation", (value: string) => {setuniqueID(value)})
+
+
+
 
     }
 
@@ -73,7 +74,7 @@ export default function Home() {
     
     <div className="relative grid grid-rows-[10px_1fr_10px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-sans">
       <div className="grid-background -z-30"></div>
-      <main className=" flex flex-col row-start-2 items-center sm:items-start w-full h-full">
+      <main className=" flex flex-col row-start-2 items-center jus sm:items-start w-full h-full">
 
         <PlayerForm formsteps={formsteps} setformsteps={setformsteps} PlayerName={PlayerName} setPlayerName={setPlayerName} playerAvatar={playerAvatar} setPlayerAvatar={setPlayerAvatar}>
 
@@ -86,7 +87,7 @@ export default function Home() {
       </footer>
     </div> : 
       
-    <TeirList uniqueID={uniqueID} OnlineUsers={OnlineUsers} signalRServiceRef={signalRServiceRef}></TeirList>}
+    <TeirList  OnlineUsers={OnlineUsers} signalRServiceRef={signalRServiceRef}></TeirList>}
 
     
     </>

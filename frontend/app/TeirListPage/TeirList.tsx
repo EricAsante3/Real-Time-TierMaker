@@ -38,7 +38,6 @@ type positions = {
 interface props {
   OnlineUsers: joiners
   signalRServiceRef: RefObject<SignalRService | null>
-  uniqueID: string | undefined
 }
 
 
@@ -111,11 +110,23 @@ const initialData: Data<string, string> = {
 
 
 
-export default function TeirList({OnlineUsers, uniqueID, signalRServiceRef}: props) {
+export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
   const [GlobalActiveCards, setGlobalActiveCards] = useState<Record<string, UniqueIdentifier>>({})
   const [data, setData] = useState<Data<string, string>>(initialData);
   const [Active, SetActive] = useState<UniqueIdentifier | null>()
   const [positions, setpositions] = useState<positions>({})
+
+
+
+
+  const [uniqueID, setuniqueID] = useState<string>();
+
+
+
+
+
+
+
 
   useEffect(() => {
     console.log(GlobalActiveCards)
@@ -155,6 +166,13 @@ export default function TeirList({OnlineUsers, uniqueID, signalRServiceRef}: pro
     signalRServiceRef.current?.on("NewPositions",handleNewPositions)
     signalRServiceRef.current?.on("NewDragged",handleDragStarted)
     signalRServiceRef.current?.on("EndedDrag",handleDragEnded)
+    signalRServiceRef.current?.on("JoinConfirmation", (value: string, currentcardstate: string) => {
+    setuniqueID(value)
+        if (currentcardstate.length > 0){
+          setData(JSON.parse(currentcardstate))
+        }
+      })
+
 
     return () => {
     signalRServiceRef.current?.off("NewPositions")
@@ -194,8 +212,9 @@ const lastoverid = useRef<UniqueIdentifier | null>(null)
   function renderOverlay() {
 
 
-    return <DragOverlay> <div className='bg-red-400'>{Active}</div></DragOverlay>
+    return <DragOverlay > <div style={{ backgroundImage: `url('/images/${Active}')`}} className='bg-no-repeat bg-contain bg-center h-20 w-20  text-black'></div></DragOverlay>
     
+
   }
 
 
@@ -519,7 +538,7 @@ const lastoverid = useRef<UniqueIdentifier | null>(null)
 
 
 
-      <footer className="row-start-2 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="row-start-2 flex flex-wrap items-center justify-center">
         <h1>Created by Eric Asante</h1>
 
       </footer>

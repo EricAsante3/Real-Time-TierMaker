@@ -8,6 +8,7 @@ public class ChatHub : Hub
 {
     private static ConcurrentDictionary<string, string> ActiveCards = new();
 
+    private static string currentcardstate = "";
     private static ConcurrentDictionary<string, ClientInfo> ClientsInfo = new();
     private static ConcurrentDictionary<string, ClientPosition> ClientsPosition = new();
 
@@ -26,7 +27,7 @@ public class ChatHub : Hub
         string RandomColor = GenerateRandomColor();
         ClientsInfo[Context.ConnectionId] = new ClientInfo { Name = Name, Avatar = Avatar, Color = RandomColor };
         await Clients.All.SendAsync("NewJoiner", ClientsInfo);
-        await Clients.Caller.SendAsync("JoinConfirmation", Context.ConnectionId);
+        await Clients.Caller.SendAsync("JoinConfirmation", Context.ConnectionId, currentcardstate);
     }
 
 
@@ -47,6 +48,7 @@ public class ChatHub : Hub
     public async Task handleDragEnd(string newCardlist)
     {
         ActiveCards.TryRemove(Context.ConnectionId, out _);
+        currentcardstate = newCardlist;
         await Clients.All.SendAsync("EndedDrag", ActiveCards, newCardlist);
     }
 

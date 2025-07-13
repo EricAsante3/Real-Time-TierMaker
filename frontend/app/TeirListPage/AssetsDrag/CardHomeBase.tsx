@@ -36,7 +36,7 @@ export default function CardHomeBase({ idvalue, Cards, GlobalActiveCards, Online
 
   return (
           <SortableContext items={Cards}>
-            <div ref={setNodeRef} className="  w-full h-56 m-0 border border-white  ">
+            <div ref={setNodeRef} className="  w-full h-44 m-0 border border-white  ">
                 <div className='flex flex-row  flex-wrap w-full h-fit items-center p-2 space-x-2 '>
 
                   {Cards.map((card) => (

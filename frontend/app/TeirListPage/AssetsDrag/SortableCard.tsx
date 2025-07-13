@@ -41,7 +41,7 @@ export default function SortableCard({id, name, GlobalActiveCards, OnlineUsers}:
     };
 
   return (
-    <Card id={id} className={clsx({" border border-red-400": isDragging },{" pointer-events-none border-amber-400": (Object.values(GlobalActiveCards)).includes(id as string)},   "bg-no-repeat bg-contain bg-center h-20 w-20  text-black")} name={name} ref={setNodeRef} attributes={attributes} listeners={listeners} style={style} ></Card>
+    <Card id={id} className={clsx({" border": isDragging },{" opacity-50 pointer-events-none": (Object.values(GlobalActiveCards)).includes(id as string)},   "bg-no-repeat bg-contain bg-center h-20 w-20  text-black")} name={name} ref={setNodeRef} attributes={attributes} listeners={listeners} style={style} ></Card>
 
   );
 }
