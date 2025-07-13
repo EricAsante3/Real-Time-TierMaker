@@ -5,26 +5,43 @@ import clsx from "clsx";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
 
+type joiners = {
+  [userId: string]: {
+    name: string;
+    avatar: string; // still a string, unless you parse it
+    color: string
+  };
+};
+
+
+
 interface Sortableprops {
     id: UniqueIdentifier
     name: string
-    GlobalActiveCards: UniqueIdentifier[]
+    GlobalActiveCards: Record<string, UniqueIdentifier>
+    OnlineUsers: joiners
 } 
 
 
 
-export default function SortableCard({id, name,GlobalActiveCards}: Sortableprops) {
+export default function SortableCard({id, name, GlobalActiveCards, OnlineUsers}: Sortableprops) {
+
+    const key = Object.entries(GlobalActiveCards).find(([, value]) => value === id as string)?.[0];
     const sortableProps = useSortable({id: id})
     const {setNodeRef, attributes, listeners, transform,transition,isDragging} = sortableProps
 
     const style = {
         //Outputs `translate3d(x, y, 0)`
-       transform: CSS.Translate.toString(transform),
-       transition,
-     };
-  
+      transform: CSS.Translate.toString(transform),
+      transition,
+      borderColor: key ? OnlineUsers[key].color : undefined,
+      borderStyle: 'solid', 
+      borderWidth: '4px',
+      backgroundImage: `url('/images/${id}')`
+    };
+
   return (
-    <Card id={id} className={clsx({" opacity-40 border border-red-400": isDragging },{"opacity-5 pointer-events-none": GlobalActiveCards.includes(id)},   "h-16 w-16 bg-green-200 text-black")} name={name} ref={setNodeRef} attributes={attributes} listeners={listeners} style={style} ></Card>
+    <Card id={id} className={clsx({" border border-red-400": isDragging },{" pointer-events-none border-amber-400": (Object.values(GlobalActiveCards)).includes(id as string)},   "bg-no-repeat bg-contain bg-center h-20 w-20  text-black")} name={name} ref={setNodeRef} attributes={attributes} listeners={listeners} style={style} ></Card>
 
   );
 }

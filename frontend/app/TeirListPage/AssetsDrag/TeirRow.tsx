@@ -7,18 +7,29 @@ import { SortableContext } from "@dnd-kit/sortable";
 import SortableCard from './SortableCard';
 import { Item } from './types';
 
+type joiners = {
+  [userId: string]: {
+    name: string;
+    avatar: string; // still a string, unless you parse it
+    color: string
+  };
+};
+
+
 
 interface DraggableProps {
   idvalue: string;
   Cards: Item<string>[]
-  GlobalActiveCards: UniqueIdentifier[]
+  GlobalActiveCards: Record<string, UniqueIdentifier>
   classname: string; // Optional className prop
+  OnlineUsers: joiners
+
 }
 
 
 
 
-export default function TeirRow({ idvalue, Cards,GlobalActiveCards, classname}: DraggableProps) {
+export default function TeirRow({ idvalue, Cards,GlobalActiveCards, classname, OnlineUsers}: DraggableProps) {
 
 
     
@@ -39,7 +50,7 @@ export default function TeirRow({ idvalue, Cards,GlobalActiveCards, classname}: 
               <div ref={setNodeRef} className="flex flex-row min-h-20 w-full flex-wrap h-full items-center p-2 space-x-2 border border-white ">
 
                 {Cards.map((card) => (
-                  <SortableCard GlobalActiveCards={GlobalActiveCards} key={card.id} id={card.id} name={card.name} />
+                  <SortableCard OnlineUsers={OnlineUsers} GlobalActiveCards={GlobalActiveCards} key={card.id} id={card.id} name={card.name} />
                 ))}
 
               </div>

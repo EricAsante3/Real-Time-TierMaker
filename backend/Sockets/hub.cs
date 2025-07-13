@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 public class ChatHub : Hub
 {
-    private static List<string> ActiveCards = new();
+    private static ConcurrentDictionary<string, string> ActiveCards = new();
 
     private static ConcurrentDictionary<string, ClientInfo> ClientsInfo = new();
     private static ConcurrentDictionary<string, ClientPosition> ClientsPosition = new();
@@ -40,13 +40,13 @@ public class ChatHub : Hub
 
     public async Task handleDragStart(string id)
     {
-        ActiveCards.Add(id);
+        ActiveCards[Context.ConnectionId] = id;
         await Clients.All.SendAsync("NewDragged", ActiveCards);
     }
 
-    public async Task handleDragEnd(string id, string newCardlist)
+    public async Task handleDragEnd(string newCardlist)
     {
-        ActiveCards.Remove(id);
+        ActiveCards.TryRemove(Context.ConnectionId, out _);
         await Clients.All.SendAsync("EndedDrag", ActiveCards, newCardlist);
     }
 

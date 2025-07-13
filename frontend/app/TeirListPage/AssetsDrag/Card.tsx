@@ -16,7 +16,7 @@ interface props extends sortableProps {
 
 
 
-export default function Card({className, name, style, ref, attributes, listeners}: props) {
+export default function Card({className, style, ref, attributes, listeners}: props) {
 
 
 
@@ -30,7 +30,13 @@ export default function Card({className, name, style, ref, attributes, listeners
      //  };
   
   return (
-    <div ref={ref} {...attributes} {...listeners} style={style} className={className}>{name}</div>
+    <div  ref={ref} {...attributes} {...listeners} style={style} className={className}>
+      
+      
+    
+    
+    
+    </div>
 
   );
 }

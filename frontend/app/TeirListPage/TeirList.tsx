@@ -83,9 +83,28 @@ const initialData: Data<string, string> = {
     ["Home"]: {
       data: "Home",
       children: [
-        { id: "in-progress-item-1", name: "In progress 1" },
-        { id: "in-progress-item-2", name: "In progress 2" },
-        { id: "in-progress-item-3", name: "In progress 3" },
+        { id: "alex-russell-1.jpg", name: "alex-russell-1" },
+        { id: "curry-300.jpg", name: "curry-300" },
+        { id: "derek-300x300-1.jpg", name: "derek-300x300-1" },
+        { id: "Dongjin-300px.jpg", name: "Dongjin-300px" },
+        { id: "dstrimple-300.jpg", name: "dstrimple-300" },
+        { id: "FEI-MIAO-300x298-1.jpg", name: "FEI-MIAO-300x298-1" },
+        { id: "JAKE-SCOGGIN.jpg", name: "JAKE-SCOGGIN" },
+        { id: "jon-clark-300.jpg", name: "jon-clark-300" },
+        { id: "laurent-michel-300x297-1.jpg", name: "laurent-michel-300x297-1" },
+        { id: "LinaKloub2_square.png", name: "LinaKloub2_square" },
+        { id: "matt-lamoureux.jpg", name: "matt-lamoureux" },
+        { id: "MOHAMMAD-MAIFI-HASAN-KHAN-300x297-1.jpg", name: "MOHAMMAD-MAIFI-HASAN-KHAN-300x297-1" },
+        { id: "Olga-300.jpg", name: "Olga-300" },
+        { id: "Seung-Hyun-Hong-300x300-1.png", name: "Seung-Hyun-Hong-300x300-1" },
+        { id: "song-han-300x300-1.jpg", name: "song-han-300x300-1" },
+        { id: "SWAPNA-S-GOKHALE-300x300-1.jpg", name: "SWAPNA-S-GOKHALE-300x300-1" },
+        { id: "tingting-300.jpg", name: "tingting-300" },
+        { id: "WALTER-O-KRAWEC-300x297-1.jpg", name: "WALTER-O-KRAWEC-300x297-1" },
+        { id: "WEI-WEI.jpg", name: "WEI-WEI" },
+        { id: "yuan-300.png", name: "yuan-300" },
+        { id: "YUFENG-WU.jpg", name: "YUFENG-WU" },
+        { id: "ZHIJIE-JERRY-SHI.jpg", name: "ZHIJIE-JERRY-SHI" }
       ],
     }
   };
@@ -93,7 +112,7 @@ const initialData: Data<string, string> = {
 
 
 export default function TeirList({OnlineUsers, uniqueID, signalRServiceRef}: props) {
-  const [GlobalActiveCards, setGlobalActiveCards] = useState<UniqueIdentifier[]>([])
+  const [GlobalActiveCards, setGlobalActiveCards] = useState<Record<string, UniqueIdentifier>>({})
   const [data, setData] = useState<Data<string, string>>(initialData);
   const [Active, SetActive] = useState<UniqueIdentifier | null>()
   const [positions, setpositions] = useState<positions>({})
@@ -118,12 +137,13 @@ export default function TeirList({OnlineUsers, uniqueID, signalRServiceRef}: pro
     setpositions(Info)
   }
 
-  function handleDragStarted(activearray: UniqueIdentifier[]){
+  function handleDragStarted(activearray: Record<string, UniqueIdentifier>){
+    console.log("aaaaaaaaaaaaaaa",activearray)
     setGlobalActiveCards(activearray)
   }
 
 
-  function handleDragEnded(activearray: UniqueIdentifier[], newData: string){
+  function handleDragEnded(activearray: Record<string, UniqueIdentifier>, newData: string){
     setGlobalActiveCards(activearray)
     setData(JSON.parse(newData))
   }
@@ -270,7 +290,7 @@ const lastoverid = useRef<UniqueIdentifier | null>(null)
     if(Object.keys(newdata).length === 0){
       newdata = data
     }
-    signalRServiceRef.current?.invoke("handleDragEnd", event.active.id, JSON.stringify(newdata))
+    signalRServiceRef.current?.invoke("handleDragEnd", JSON.stringify(newdata))
     SetActive(null)
   }
 
@@ -348,10 +368,9 @@ const lastoverid = useRef<UniqueIdentifier | null>(null)
             if(uniqueID === position){
               return null
             }
-            if (uniqueID){
-              color = OnlineUsers[uniqueID].color
+            if (position){
+              color = OnlineUsers[position] ? OnlineUsers[position].color : "#FFFFFF"
             }
-            console.log("colorrr", color)
             const X = positions[position].xpos * window.innerWidth
             const Y = positions[position].ypos * window.innerHeight
         return (
@@ -459,34 +478,34 @@ const lastoverid = useRef<UniqueIdentifier | null>(null)
 
 
 
-            <TeirRow idvalue={data["S"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["S"].children} classname='bg-yellow-500'>
+            <TeirRow   OnlineUsers={OnlineUsers} idvalue={data["S"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["S"].children} classname='bg-yellow-500'>
 
             </TeirRow>
           
-            <TeirRow idvalue={data["A"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["A"].children } classname='bg-green-500'>
+            <TeirRow OnlineUsers={OnlineUsers} idvalue={data["A"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["A"].children } classname='bg-green-500'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["B"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["B"].children} classname='bg-green-700'>
+            <TeirRow OnlineUsers={OnlineUsers} idvalue={data["B"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["B"].children} classname='bg-green-700'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["C"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["C"].children} classname='bg-orange-500'>
+            <TeirRow OnlineUsers={OnlineUsers} idvalue={data["C"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["C"].children} classname='bg-orange-500'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["D"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["D"].children} classname='bg-orange-700'>
+            <TeirRow OnlineUsers={OnlineUsers} idvalue={data["D"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["D"].children} classname='bg-orange-700'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["F"].data} GlobalActiveCards={GlobalActiveCards}  Cards={data["F"].children} classname='bg-red-500'>
+            <TeirRow OnlineUsers={OnlineUsers} idvalue={data["F"].data} GlobalActiveCards={GlobalActiveCards}  Cards={data["F"].children} classname='bg-red-500'>
 
             </TeirRow>
 
 
           </div>
 
-        <CardHomeBase idvalue={data["Home"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["Home"].children}></CardHomeBase>
+        <CardHomeBase OnlineUsers={OnlineUsers} idvalue={data["Home"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["Home"].children}></CardHomeBase>
 
 
             

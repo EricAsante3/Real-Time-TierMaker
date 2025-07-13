@@ -7,15 +7,25 @@ import SortableCard from './SortableCard';
 import { Item } from './types';
 
 
+type joiners = {
+  [userId: string]: {
+    name: string;
+    avatar: string; // still a string, unless you parse it
+    color: string
+  };
+};
+
+
 interface DraggableProps {
   idvalue: string;
   Cards: Item<string>[]
-  GlobalActiveCards: UniqueIdentifier[]
+  GlobalActiveCards: Record<string, UniqueIdentifier>
+  OnlineUsers: joiners
 }
 
 
 
-export default function CardHomeBase({ idvalue, Cards, GlobalActiveCards}: DraggableProps) {
+export default function CardHomeBase({ idvalue, Cards, GlobalActiveCards, OnlineUsers}: DraggableProps) {
 
 
     
@@ -30,7 +40,7 @@ export default function CardHomeBase({ idvalue, Cards, GlobalActiveCards}: Dragg
                 <div className='flex flex-row  flex-wrap w-full h-fit items-center p-2 space-x-2 '>
 
                   {Cards.map((card) => (
-                    <SortableCard GlobalActiveCards={GlobalActiveCards} key={card.id} id={card.id} name={card.name} />
+                    <SortableCard OnlineUsers={OnlineUsers} GlobalActiveCards={GlobalActiveCards} key={card.id} id={card.id} name={card.name} />
                   ))}
 
                 </div>
