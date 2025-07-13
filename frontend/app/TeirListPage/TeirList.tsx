@@ -24,6 +24,7 @@ type joiners = {
   [userId: string]: {
     name: string;
     avatar: string; // still a string, unless you parse it
+    color: string
   };
 };
 
@@ -37,7 +38,7 @@ type positions = {
 interface props {
   OnlineUsers: joiners
   signalRServiceRef: RefObject<SignalRService | null>
-
+  uniqueID: string | undefined
 }
 
 
@@ -91,7 +92,7 @@ const initialData: Data<string, string> = {
 
 
 
-export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
+export default function TeirList({OnlineUsers, uniqueID, signalRServiceRef}: props) {
   const [GlobalActiveCards, setGlobalActiveCards] = useState<UniqueIdentifier[]>([])
   const [data, setData] = useState<Data<string, string>>(initialData);
   const [Active, SetActive] = useState<UniqueIdentifier | null>()
@@ -128,7 +129,6 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
   }
 
 
-
   useEffect(() => {
 
     window.addEventListener('mousemove', sendCursorPosition);
@@ -145,12 +145,7 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
   });
 
 
-  const lastoverid = useRef<UniqueIdentifier | null>(null)
-
-
-
-
-
+const lastoverid = useRef<UniqueIdentifier | null>(null)
 
 
   function findColumnId(id: UniqueIdentifier) {
@@ -347,26 +342,80 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
 
 
-      {Object.values(positions).map((position, index) => {
-            const X = position.xpos * window.innerWidth
-            const Y = position.ypos * window.innerHeight
+      {Object.keys(positions).map((position, index) => {
+            let color = "#FFFFFF"
 
+            if(uniqueID === position){
+              return null
+            }
+            if (uniqueID){
+              color = OnlineUsers[uniqueID].color
+            }
+            console.log("colorrr", color)
+            const X = positions[position].xpos * window.innerWidth
+            const Y = positions[position].ypos * window.innerHeight
         return (
-              <div
-                key={index}
+
+
+
+
+              <svg className=''
+
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
                 style={{
                   position: 'absolute',
                   left: `${X }px`,
                   top: `${Y }px`,
-                  width: 10,
-                  height: 10,
-                  backgroundColor: 'red',
+                  width: 50,
+                  height: 50,
                   borderRadius: '50%',
                   pointerEvents: 'none',
                   transform: 'translate(-50%, -50%)',
                   zIndex: 1000
                 }}
-    />
+                key={index}
+              >
+                <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+                <g
+                  id="SVGRepo_tracerCarrier"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  stroke="#CCCCCC"
+                  strokeWidth="0.048"
+                >
+                  <path
+                    d="M17.2607 12.4008C19.3774 11.2626 20.4357 10.6935 20.7035 10.0084C20.9359 9.41393 20.8705 8.74423 20.5276 8.20587C20.1324 7.58551 18.984 7.23176 16.6872 6.52425L8.00612 3.85014C6.06819 3.25318 5.09923 2.95471 4.45846 3.19669C3.90068 3.40733 3.46597 3.85584 3.27285 4.41993C3.051 5.06794 3.3796 6.02711 4.03681 7.94545L6.94793 16.4429C7.75632 18.8025 8.16052 19.9824 8.80519 20.3574C9.36428 20.6826 10.0461 20.7174 10.6354 20.4507C11.3149 20.1432 11.837 19.0106 12.8813 16.7454L13.6528 15.0719C13.819 14.7113 13.9021 14.531 14.0159 14.3736C14.1168 14.2338 14.2354 14.1078 14.3686 13.9984C14.5188 13.8752 14.6936 13.7812 15.0433 13.5932L17.2607 12.4008Z"
+                    stroke="#000000"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    fill={color}
+                  />
+                </g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M17.2607 12.4008C19.3774 11.2626 20.4357 10.6935 20.7035 10.0084C20.9359 9.41393 20.8705 8.74423 20.5276 8.20587C20.1324 7.58551 18.984 7.23176 16.6872 6.52425L8.00612 3.85014C6.06819 3.25318 5.09923 2.95471 4.45846 3.19669C3.90068 3.40733 3.46597 3.85584 3.27285 4.41993C3.051 5.06794 3.3796 6.02711 4.03681 7.94545L6.94793 16.4429C7.75632 18.8025 8.16052 19.9824 8.80519 20.3574C9.36428 20.6826 10.0461 20.7174 10.6354 20.4507C11.3149 20.1432 11.837 19.0106 12.8813 16.7454L13.6528 15.0719C13.819 14.7113 13.9021 14.531 14.0159 14.3736C14.1168 14.2338 14.2354 14.1078 14.3686 13.9984C14.5188 13.8752 14.6936 13.7812 15.0433 13.5932L17.2607 12.4008Z"
+                    stroke="#000000"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+
+
+              </svg>
+
+
+
+
+
+
+
+
+
+
         )})}
 
 
@@ -380,11 +429,14 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
             <div className='w-full h-full space-y-2 flex flex-col items-center justify-center'>
               
               {Object.values(OnlineUsers).map((user, index) => {
-                const avatar = genConfig(JSON.parse(user.avatar))
+                const avatarjson = JSON.parse(user.avatar)
+                avatarjson["bgColor"] = user.color
+                
+                const avatar = genConfig(avatarjson)
                 
                 return (
                 <div className='flex items-center w-full justify-baseline ' key={index}>
-                  <Avatar className="w-16 h-16 mr-2" {...avatar} />
+                  <Avatar className={`w-16 h-16 mr-2 border border-white`} {...avatar} />
                   <p className="truncate overflow-hidden text-ellipsis whitespace-nowrap w-12">
                     {user.name}
                   </p>
@@ -455,3 +507,5 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
     </div>
   );
 }
+
+

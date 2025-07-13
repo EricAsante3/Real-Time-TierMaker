@@ -11,13 +11,14 @@ type joiners = {
   [userId: string]: {
     name: string;
     avatar: string; // still a string, unless you parse it
+    color: string; // still a string, unless you parse it
+
   };
 };
 
 
 export default function Home() {
-
-
+  const [uniqueID, setuniqueID] = useState<string>();
   const [OnlineUsers, setOnlineUsers] = useState<joiners>({});
   
 
@@ -35,6 +36,8 @@ export default function Home() {
       const service = new SignalRService("3443");
       signalRServiceRef.current = service;
       service.on("NewJoiner", handleNewjoiners)
+      service.on("JoinConfirmation", (value: string) => {setuniqueID(value)})
+
     }
 
 
@@ -83,7 +86,7 @@ export default function Home() {
       </footer>
     </div> : 
       
-    <TeirList OnlineUsers={OnlineUsers} signalRServiceRef={signalRServiceRef}></TeirList>}
+    <TeirList uniqueID={uniqueID} OnlineUsers={OnlineUsers} signalRServiceRef={signalRServiceRef}></TeirList>}
 
     
     </>

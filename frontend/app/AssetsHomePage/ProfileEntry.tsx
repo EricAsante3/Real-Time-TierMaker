@@ -156,24 +156,24 @@ export default function ProfileEntry({setavatar}: info) {
 
                 <ul className="flex flex-col space-y-0 items-center justify-evenly  w-fit h-fit sm:h-fit sm:space-x-8 sm:space-y-0 sm:flex-row">
                 
-                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(kyla)} className='flex flex-col items-center justify-center space-y-2'>
-                    <Avatar className="w-32 h-32" {...KylaAvatar} />
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(kyla)} className='flex flex-col items-center justify-center space-y-2 '>
+                    <Avatar className="w-32 h-32 border border-white" {...KylaAvatar} />
                     <figcaption className='tracking-widest font-serif text-lg'>KyKy</figcaption>
                   </motion.figure>
 
                 
                   <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 0.5, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(me)} className='flex flex-col items-center justify-center space-y-2'>
-                    <Avatar className="w-32 h-32" {...MeAvatar} />
+                    <Avatar className="w-32 h-32 border border-white" {...MeAvatar} />
                     <figcaption className='tracking-widest font-serif text-lg'>GriddyEric</figcaption>
                   </motion.figure>
 
                   <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 1, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(colin)} className='flex flex-col items-center justify-center space-y-2'>
-                    <Avatar className="w-32 h-32" {...ColinAvatar} />
+                    <Avatar className="w-32 h-32 border border-white" {...ColinAvatar} />
                     <figcaption className='tracking-widest font-serif text-lg'>Mr.Chill</figcaption>
                   </motion.figure>
 
                   <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 1.5, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(ethan)} className='flex flex-col items-center justify-center space-y-2'>
-                    <Avatar className="w-32 h-32" {...EthanAvatar } />
+                    <Avatar className="w-32 h-32 border border-white" {...EthanAvatar } />
                     <figcaption className='tracking-widest font-serif text- text-lg'>ETmaster</figcaption>
                   </motion.figure>
 

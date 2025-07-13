@@ -23,9 +23,10 @@ public class ChatHub : Hub
 
     public async Task Join(string Name, string Avatar)
     {
-
-        ClientsInfo[Context.ConnectionId] = new ClientInfo { Name = Name, Avatar = Avatar };
+        string RandomColor = GenerateRandomColor();
+        ClientsInfo[Context.ConnectionId] = new ClientInfo { Name = Name, Avatar = Avatar, Color = RandomColor };
         await Clients.All.SendAsync("NewJoiner", ClientsInfo);
+        await Clients.Caller.SendAsync("JoinConfirmation", Context.ConnectionId);
     }
 
 
@@ -72,6 +73,13 @@ public class ChatHub : Hub
     }
 
 
+
+    private string GenerateRandomColor()
+    {
+        Random rand = new Random();
+        return $"#{rand.Next(0x1000000):X6}"; // Generates a random hex color code
+    }
+
 }
 
 
@@ -81,7 +89,10 @@ public class ClientInfo
 
     public required string Name { get; set; }
 
-    public required string Avatar { get; set; }
+    public required string Avatar { get; set; } 
+    
+    public required string Color { get; set; }
+
 }
 public class ClientPosition
 {
@@ -102,3 +113,4 @@ public class Column
     public string? Data { get; set; }
     public List<ChildItem> Children { get; set; } = new List<ChildItem>();
 }
+
