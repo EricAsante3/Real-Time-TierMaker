@@ -1,7 +1,7 @@
 "use client";  // <-- Add this line at the top
 
 import React from 'react';
-import {useDroppable} from '@dnd-kit/core';
+import {UniqueIdentifier, useDroppable} from '@dnd-kit/core';
 import clsx from "clsx";
 import { SortableContext } from "@dnd-kit/sortable";
 import SortableCard from './SortableCard';
@@ -11,12 +11,14 @@ import { Item } from './types';
 interface DraggableProps {
   idvalue: string;
   Cards: Item<string>[]
+  GlobalActiveCards: UniqueIdentifier[]
+  classname?: string; // Optional className prop
 }
 
 
 
 
-export default function TeirRow({ idvalue, Cards}: DraggableProps) {
+export default function TeirRow({ idvalue, Cards,GlobalActiveCards, classname}: DraggableProps) {
 
 
     
@@ -27,8 +29,8 @@ export default function TeirRow({ idvalue, Cards}: DraggableProps) {
 
   return (
           <SortableContext items={Cards}>
-            <div className="w-full min-h-20 h-fit flex flex-row p-2 space-x-2">
-              <div className={clsx("min-h-20 h-full flex items-center justify-center aspect-square font-sans text-4xl", { "text-black": isOver })}>
+            <div className="w-full  min-h-20 h-fit flex flex-row p-2 space-x-2">
+              <div className={clsx("min-h-20 h-full flex items-center justify-center aspect-square font-sans text-4xl", { "text-black": isOver }, classname)}>
               <h1>
                 {idvalue}
               </h1>
@@ -37,7 +39,7 @@ export default function TeirRow({ idvalue, Cards}: DraggableProps) {
               <div ref={setNodeRef} className="flex flex-row min-h-20 w-full flex-wrap h-full items-center p-2 space-x-2 border border-white ">
 
                 {Cards.map((card) => (
-                  <SortableCard key={card.id} id={card.id} name={card.name} />
+                  <SortableCard GlobalActiveCards={GlobalActiveCards} key={card.id} id={card.id} name={card.name} />
                 ))}
 
               </div>

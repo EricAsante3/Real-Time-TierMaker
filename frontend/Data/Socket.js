@@ -10,7 +10,7 @@ export default class SignalRService {
     }
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5162/chat", {
+      .withUrl("https://eric-productions.com/chat", {
         withCredentials: true, // 👈 required if you use AllowCredentials()
         accessTokenFactory: () => userId
     }) // Replace with your hub URL
@@ -33,8 +33,8 @@ export default class SignalRService {
   }
 
   invoke(method, ...args) {
+
     if (this.connection.state === signalR.HubConnectionState.Connected) {
-      console.log("backkk", ...args)
       return this.connection.invoke(method, ...args);
     } else {
       console.warn("SignalR not connected. Cannot invoke:", method);

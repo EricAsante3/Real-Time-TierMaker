@@ -1,5 +1,7 @@
 import Avatar, {genConfig} from 'react-nice-avatar';
 
+import {motion} from "framer-motion"
+
 interface info {
     setavatar: React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
 }
@@ -15,6 +17,7 @@ export default function ProfileEntry({setavatar}: info) {
     mouthStyle: "smile",
     shirtStyle: "hoody",
     glassesStyle: "round",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     hairColor: "#000000",
     hairStyle: "womanShort",
     hatStyle: "none",
@@ -32,6 +35,7 @@ export default function ProfileEntry({setavatar}: info) {
     shirtStyle: "polo",
     glassesStyle: "none",
     hairColor: "#000000",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     hairStyle: "womanShort",
     hatStyle: "beanie",
     hatColor: "#000000",
@@ -47,6 +51,7 @@ export default function ProfileEntry({setavatar}: info) {
     mouthStyle: "laugh",
     shirtStyle: "short",
     glassesStyle: "none",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     hairColor: "#000000",
     hairStyle: "thick",
     hatStyle: "none",
@@ -78,6 +83,7 @@ export default function ProfileEntry({setavatar}: info) {
     noseStyle: "short",
     mouthStyle: "smile",
     shirtStyle: "hoody",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     glassesStyle: "round",
     hairColor: "#000000",
     hairStyle: "womanShort",
@@ -98,6 +104,7 @@ export default function ProfileEntry({setavatar}: info) {
     hairColor: "#000000",
     hairStyle: "womanShort",
     hatStyle: "beanie",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     hatColor: "#000000",
     bgColor: "linear-gradient(135deg, #EF3340, #FFD100, #009739)", // saffron-white-green (Indian flag)
   })
@@ -113,6 +120,7 @@ export default function ProfileEntry({setavatar}: info) {
     glassesStyle: "none",
     hairColor: "#000000",
     hairStyle: "thick",
+    shirtColor: "#FF9933", // saffron (Indian flag color)
     hatStyle: "none",
     hatColor: "#000000",
     bgColor: "linear-gradient(135deg, #0032A0, #BF0D3E, #FFFFFF, #FED141)", // saffron-white-green (Indian flag)
@@ -146,36 +154,44 @@ export default function ProfileEntry({setavatar}: info) {
 
                 <h1 className="text-center text-foreground text-3xl font-mono  font-semibold tracking-widest sm:text-6xl">Avatar Select</h1>
 
-                <ul className="flex flex-col space-y-8 items-center justify-evenly  w-fit h-fit sm:h-fit sm:space-x-8 sm:flex-row">
+                <ul className="flex flex-col space-y-0 items-center justify-evenly  w-fit h-fit sm:h-fit sm:space-x-8 sm:space-y-0 sm:flex-row">
                 
-                  <figure onClick={() => handleDivClick(kyla)} className='flex flex-col items-center justify-center space-y-2'>
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(kyla)} className='flex flex-col items-center justify-center space-y-2'>
                     <Avatar className="w-32 h-32" {...KylaAvatar} />
-                    <figcaption>KyKy</figcaption>
-                  </figure>
+                    <figcaption className='tracking-widest font-serif text-lg'>KyKy</figcaption>
+                  </motion.figure>
 
                 
-                  <figure onClick={() => handleDivClick(me)} className='flex flex-col items-center justify-center space-y-2'>
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 0.5, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(me)} className='flex flex-col items-center justify-center space-y-2'>
                     <Avatar className="w-32 h-32" {...MeAvatar} />
-                    <figcaption>GriddyEric</figcaption>
-                  </figure>
+                    <figcaption className='tracking-widest font-serif text-lg'>GriddyEric</figcaption>
+                  </motion.figure>
 
-                  <figure onClick={() => handleDivClick(colin)} className='flex flex-col items-center justify-center space-y-2'>
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 1, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(colin)} className='flex flex-col items-center justify-center space-y-2'>
                     <Avatar className="w-32 h-32" {...ColinAvatar} />
-                    <figcaption>Mr.Chill</figcaption>
-                  </figure>
+                    <figcaption className='tracking-widest font-serif text-lg'>Mr.Chill</figcaption>
+                  </motion.figure>
 
-                  <figure onClick={() => handleDivClick(ethan)} className='flex flex-col items-center justify-center space-y-2'>
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 1.5, duration: 1,ease: "easeOut",}} onClick={() => handleDivClick(ethan)} className='flex flex-col items-center justify-center space-y-2'>
                     <Avatar className="w-32 h-32" {...EthanAvatar } />
-                    <figcaption>ETmaster</figcaption>
-                  </figure>
+                    <figcaption className='tracking-widest font-serif text- text-lg'>ETmaster</figcaption>
+                  </motion.figure>
 
-                  <figure className='flex flex-col items-center justify-center space-y-2'>
-                    <div className="w-32 h-32 rounded-full bg-[linear-gradient(135deg,_#FF6B6B,_#6A82FB,_#F9ED69)]"  />
-                    <figcaption>Joel Duah</figcaption>
-                  </figure>
 
 
                 </ul>
+                <div className='flex flex-row  items-center w-full justify-evenly  space-x-12'>
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 2, duration: 1,ease: "easeOut",}} className='flex flex-col items-center justify-center space-y-2'>
+                    <div className="w-32 h-32 rounded-full bg-[linear-gradient(135deg,_#FF6B6B,_#6A82FB,_#F9ED69)]"  />
+                    <figcaption className='tracking-widest font-serif  text-lg'>Mr.FoldAlot - aka Joel</figcaption>
+
+                  </motion.figure>
+
+                  <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 2.5, duration: 1,ease: "easeOut",}} className='flex flex-col items-center justify-center space-y-2'>
+                    <div className="w-32 h-32 rounded-full border border-white"  />
+                    <figcaption className='tracking-widest font-serif  text-lg'>Locked: Germain</figcaption>
+                  </motion.figure>
+                </div>
                 <button type="submit" id="hiddenSubmit" style={{ display: "none" }} />
               </div>
     );

@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useEffect } from "react";
 import NameEntry from "./NameEntry";
 import ProfileEntry from "./ProfileEntry";
 
@@ -11,7 +11,7 @@ interface props {
   setformsteps: React.Dispatch<React.SetStateAction<number>>; 
   PlayerName: string
   setPlayerName:  React.Dispatch<React.SetStateAction<string>>;
-  playerAvatar, 
+  playerAvatar: Record<string, unknown>, 
   setPlayerAvatar:  React.Dispatch<React.SetStateAction<Record<string, unknown>>>;
 }
 

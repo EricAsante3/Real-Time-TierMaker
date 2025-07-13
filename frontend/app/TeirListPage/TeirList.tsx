@@ -2,14 +2,11 @@
 
 import Avatar, {genConfig} from 'react-nice-avatar';
 import {closestCenter, CollisionDetection, DndContext, DragEndEvent, DragStartEvent, DragOverEvent, getFirstCollision, pointerWithin, rectIntersection, UniqueIdentifier} from '@dnd-kit/core';
-import Draggable from './AssetsDrag/Draggable';
 import { DragOverlay } from '@dnd-kit/core';
 import TeirRow from './AssetsDrag/TeirRow';
-import Card from './AssetsDrag/Card';
-import { CardList } from './AssetsDrag/types';
 import React, { useEffect, useRef, useState, RefObject } from 'react';
 import CardHomeBase from './AssetsDrag/CardHomeBase';
-import { SortableContext, arrayMove } from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import { Data } from './AssetsDrag/types';
 import throttle from 'lodash.throttle';
 import SignalRService from '../../Data/Socket';
@@ -44,7 +41,7 @@ interface props {
 }
 
 
-  const initialData: Data<string, string> = {
+const initialData: Data<string, string> = {
     ["S"]: {
       data: "S",
       children: [
@@ -95,11 +92,14 @@ interface props {
 
 
 export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
+  const [GlobalActiveCards, setGlobalActiveCards] = useState<UniqueIdentifier[]>([])
   const [data, setData] = useState<Data<string, string>>(initialData);
   const [Active, SetActive] = useState<UniqueIdentifier | null>()
   const [positions, setpositions] = useState<positions>({})
 
-
+  useEffect(() => {
+    console.log(GlobalActiveCards)
+  }, [GlobalActiveCards])
 
 
 
@@ -110,23 +110,39 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
       const x = event.clientX / window.innerWidth;
       const y = event.clientY / window.innerHeight;
       signalRServiceRef.current?.invoke("UpdatePosition", x, y)
-  }, 50); // 50 ms throttle (20 messages/sec)
+  }, 100000); // 50 ms throttle (20 messages/sec)
 
 
   function handleNewPositions(Info: positions){
     setpositions(Info)
   }
 
+  function handleDragStarted(activearray: UniqueIdentifier[]){
+    setGlobalActiveCards(activearray)
+  }
+
+
+  function handleDragEnded(activearray: UniqueIdentifier[], newData: string){
+    setGlobalActiveCards(activearray)
+    setData(JSON.parse(newData))
+  }
+
+
 
   useEffect(() => {
 
     window.addEventListener('mousemove', sendCursorPosition);
     signalRServiceRef.current?.on("NewPositions",handleNewPositions)
+    signalRServiceRef.current?.on("NewDragged",handleDragStarted)
+    signalRServiceRef.current?.on("EndedDrag",handleDragEnded)
 
     return () => {
     signalRServiceRef.current?.off("NewPositions")
+    signalRServiceRef.current?.off("NewDragged")
+    signalRServiceRef.current?.off("EndedDrag")
+
     };
-  }, []);
+  });
 
 
   const lastoverid = useRef<UniqueIdentifier | null>(null)
@@ -153,16 +169,15 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
 
   function handleondragstart(event:  DragStartEvent){
+    console.log("dragggggggggggg",event.active.id)
     SetActive(event.active.id)
-    console.log(event.active.id)
-    console.log(Object.keys(data))
-    console.log("inThisss", OnlineUsers)
+    signalRServiceRef.current?.invoke("handleDragStart", event.active.id)
+
   }
 
 
   function renderOverlay() {
 
-    let content: React.ReactNode = null;
 
     return <DragOverlay> <div className='bg-red-400'>{Active}</div></DragOverlay>
     
@@ -209,12 +224,13 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
     const activeId = event.active.id
     const overId = event.over?.id
 
+    let newdata: Data<string, string> = {}
+
 
     const activeColumnId = findColumnId(activeId)
     
     if (!activeColumnId){
       SetActive(null)
-      console.log("sasa")
       return
     }
 
@@ -236,28 +252,30 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
       );
 
       if (activeIndex !== overIndex) {
-        setData((data) => {
-          const newOverColumnChildren = arrayMove(
-            data[overColumnId].children,
-            activeIndex,
-            overIndex
-          );
 
-          const newData = {
-            ...data,
-            [overColumnId]: {
-              ...data[overColumnId],
-              children: newOverColumnChildren,
-            },
-          };
+        const newOverColumnChildren = arrayMove(
+          data[overColumnId].children,
+          activeIndex,
+          overIndex
+        );
 
-          return newData;
-        });
+        const newData = {
+          ...data,
+          [overColumnId]: {
+            ...data[overColumnId],
+            children: newOverColumnChildren,
+          },
+        };
+
+        newdata = newData
+        setData(newData);
       }
 
     }
-
-    
+    if(Object.keys(newdata).length === 0){
+      newdata = data
+    }
+    signalRServiceRef.current?.invoke("handleDragEnd", event.active.id, JSON.stringify(newdata))
     SetActive(null)
   }
 
@@ -324,15 +342,14 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
 
   return (
-    <div className=" h-full w-full relative grid grid-rows-[1fr_10px] items-center justify-items-center min-h-screen p-8  gap-16  font-sans">
+    <div className=" h-screen w-screen relative grid grid-rows-[1fr_10px] items-center justify-items-center min-h-screen p-8  gap-16  font-sans">
 
 
 
 
       {Object.values(positions).map((position, index) => {
-            let X = position.xpos * window.innerWidth
-            let Y = position.ypos * window.innerHeight
-            console.log(X)
+            const X = position.xpos * window.innerWidth
+            const Y = position.ypos * window.innerHeight
 
         return (
               <div
@@ -372,7 +389,7 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
             <div className='w-full h-full space-y-2'>
               
               {Object.values(OnlineUsers).map((user, index) => {
-                let avatar = genConfig(JSON.parse(user.avatar))
+                const avatar = genConfig(JSON.parse(user.avatar))
                 
                 return (
                 <div className='flex items-center w-full justify-baseline ' key={index}>
@@ -386,40 +403,43 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
           </div>
 
 
-          <div className="pr-32 pl-32 w-full min-h-96 h-fit   flex flex-col items-center justify-center">
+          <div className="pr-32 pl-32 w-7xl h-96 flex flex-col items-center justify-center">
 
 
 
-            <TeirRow idvalue={data["S"].data} Cards={data["S"].children}>
+            <TeirRow idvalue={data["S"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["S"].children} classname='bg-yellow-500'>
 
             </TeirRow>
           
-            <TeirRow idvalue={data["A"].data} Cards={data["A"].children}>
+            <TeirRow idvalue={data["A"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["A"].children } classname='bg-green-500'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["B"].data} Cards={data["B"].children}>
+            <TeirRow idvalue={data["B"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["B"].children} classname='bg-green-700'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["C"].data} Cards={data["C"].children}>
+            <TeirRow idvalue={data["C"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["C"].children} classname='bg-orange-500'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["D"].data} Cards={data["D"].children}>
+            <TeirRow idvalue={data["D"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["D"].children} classname='bg-orange-700'>
 
             </TeirRow>
 
-            <TeirRow idvalue={data["F"].data} Cards={data["F"].children}>
+            <TeirRow idvalue={data["F"].data} GlobalActiveCards={GlobalActiveCards}  Cards={data["F"].children} classname='bg-red-500'>
 
             </TeirRow>
 
 
           </div>
 
-        <CardHomeBase idvalue={data["Home"].data} Cards={data["Home"].children}></CardHomeBase>
 
+        <div className="pr-32 pl-32 w-full h-5 flex flex-col items-center justify-center">
 
+          <CardHomeBase idvalue={data["Home"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["Home"].children}></CardHomeBase>
+
+        </div>
             
 
 
