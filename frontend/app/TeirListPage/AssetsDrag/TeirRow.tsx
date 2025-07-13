@@ -12,7 +12,7 @@ interface DraggableProps {
   idvalue: string;
   Cards: Item<string>[]
   GlobalActiveCards: UniqueIdentifier[]
-  classname?: string; // Optional className prop
+  classname: string; // Optional className prop
 }
 
 

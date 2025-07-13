@@ -342,7 +342,7 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
 
   return (
-    <div className=" h-screen w-screen relative grid grid-rows-[1fr_10px] items-center justify-items-center min-h-screen p-8  gap-16  font-sans">
+    <div className=" h-full w-full relative grid grid-rows-[1fr_10px] items-center justify-items-center min-h-screen p-8  gap-16  font-sans">
 
 
 
@@ -371,22 +371,13 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
 
 
-
-
-      
-      <div className="grid-background -z-30"></div>
-
-      <main className="relative flex flex-col row-start-1 justify-center items-center w-full min-h-full h-fit sm:items-start ">
-        <DndContext id="teir-list" onDragEnd={handleDragEnd} onDragStart={handleondragstart} collisionDetection={customDetection} onDragOver={handleDragOver}>
-
-
-          <div className='absolute top-0 left-0 flex flex-col w-32 space-y-4'>
-            <div className='flex flex-row items-center justify-center space-x-3'>
+          <div className='absolute m-4 top-0 left-0 flex flex-col w-32 space-y-4'>
+            <div className='flex flex-row items-center justify-center w-full space-x-3'>
               <div className='bg-green-300 rounded-full h-5 w-5'></div>
               <h1 className='font-sans text-lg'>Online</h1>
             </div>
 
-            <div className='w-full h-full space-y-2'>
+            <div className='w-full h-full space-y-2 flex flex-col items-center justify-center'>
               
               {Object.values(OnlineUsers).map((user, index) => {
                 const avatar = genConfig(JSON.parse(user.avatar))
@@ -402,8 +393,17 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
             </div>
           </div>
 
+      
+      <div className="grid-background -z-30"></div>
 
-          <div className="pr-32 pl-32 w-7xl h-96 flex flex-col items-center justify-center">
+      <main className=" flex flex-col row-start-1 justify-center items-center w-7xl min-h-full h-fit sm:items-start ">
+        <DndContext id="teir-list" onDragEnd={handleDragEnd} onDragStart={handleondragstart} collisionDetection={customDetection} onDragOver={handleDragOver}>
+
+
+
+
+
+          <div className="pr-32 pl-32 w-full min-h-96 h-fit   flex flex-col items-center justify-center">
 
 
 
@@ -434,12 +434,9 @@ export default function TeirList({OnlineUsers, signalRServiceRef}: props) {
 
           </div>
 
+        <CardHomeBase idvalue={data["Home"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["Home"].children}></CardHomeBase>
 
-        <div className="pr-32 pl-32 w-full h-5 flex flex-col items-center justify-center">
 
-          <CardHomeBase idvalue={data["Home"].data} GlobalActiveCards={GlobalActiveCards} Cards={data["Home"].children}></CardHomeBase>
-
-        </div>
             
 
 
