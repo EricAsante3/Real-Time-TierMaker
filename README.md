@@ -4,11 +4,11 @@
   <table width="100%" style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: top; width: 40%; text-align: center;">
-        <img src="screenshots/NameSelectScreen.png" width="300" /><br/>
-        <img src="screenshots/AvatarSelectScreen.png" width="300" />
+        <img src="screenshots/NameSelectScreen.png" width="500" /><br/>
+        <img src="screenshots/AvatarSelectScreen.png" width="500" />
       </td>
         <td style="vertical-align: top; width: 60%; padding-left: 20px; text-align: center;">
-        <img src="screenshots/AvatarSelectScreen.png" width="420" />
+        <img src="screenshots/AvatarSelectScreen.png" width="620" />
         </td>
     </tr>
   </table>
