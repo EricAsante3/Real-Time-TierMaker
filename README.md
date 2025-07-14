@@ -4,7 +4,7 @@
   <table width="100%" style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: top; width: 40%; text-align: center;">
-        <img src="screenshots/collab1.png" width="200" /><br/>
+        <img src="screenshots/NameSelectScreen.png" width="200" /><br/>
         <img src="screenshots/collab2.png" width="200" />
       </td>
         <td style="vertical-align: top; width: 60%; padding-left: 20px; text-align: center;">
