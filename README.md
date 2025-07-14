@@ -11,7 +11,11 @@
     </td>
   </tr>
 </table>
-Modern real-time collaborative web application that allows multiple users to edit a tier lists document simultaneously. Tech stack including **Next.js** for the frontend and **.NET SignalR** for real-time backend communication, it mimics the live-editing capabilities of tools like Google Docs — but tailored for tier list enthusiasts and communities.
+
+
+
+
+Modern real-time collaborative web application that allows multiple users to edit a tier lists document simultaneously. Built with a modern tech stack including **Next.js** for the frontend and **.NET SignalR** for real-time backend communication, it mimics the live-editing capabilities of tools like Google Docs — but tailored for tier list enthusiasts and communities.
 
 ---
 
