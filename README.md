@@ -3,11 +3,11 @@
 <div style="text-align: center;">
   <table width="100%" style="margin: 0 auto;">
     <tr>
-      <td style="vertical-align: top; width: 40%; height: "100%"; text-align: center;">
+      <td style="vertical-align: top; width: 30%; height: "100%"; text-align: center;">
         <img src="screenshots/NameSelectScreen.png" width="700" /><br/>
         <img src="screenshots/AvatarSelectScreen.png" width="700" />
       </td>
-        <td style="vertical-align: top; width: 60%; height: "100%"; padding-left: 20px; text-align: center;">
+        <td style="vertical-align: top; width: 70%; height: "100%"; padding-left: 20px; text-align: center;">
         <img src="screenshots/GameScreen.jpg" width="920" />
         </td>
     </tr>
