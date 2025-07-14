@@ -10,7 +10,7 @@ export default class SignalRService {
     }
 
     this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("https://eric-productions.com/chat", {
+      .withUrl("http://localhost:5000/chat", {
         withCredentials: true, // 👈 required if you use AllowCredentials()
         accessTokenFactory: () => userId
     }) // Replace with your hub URL
