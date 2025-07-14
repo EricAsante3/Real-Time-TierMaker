@@ -1,16 +1,18 @@
 # Real-Time Multiplayer Tier List Document Editor
 
-<table width="100%">
-  <tr>
-    <td style="vertical-align: top; width: 40%;">
-      <img src="screenshots/collab1.png" width="200" /><br/>
-      <img src="screenshots/collab2.png" width="200" />
-    </td>
-    <td style="vertical-align: top; width: 60%; padding-left: 20px;">
-      <img src="screenshots/collab3.png" width="420" />
-    </td>
-  </tr>
-</table>
+<div style="text-align: center;">
+  <table width="100%" style="margin: 0 auto;">
+    <tr>
+      <td style="vertical-align: top; width: 40%; text-align: center;">
+        <img src="screenshots/collab1.png" width="200" /><br/>
+        <img src="screenshots/collab2.png" width="200" />
+      </td>
+        <td style="vertical-align: top; width: 60%; padding-left: 20px; text-align: center;">
+        <img src="screenshots/collab3.png" width="420" />
+        </td>
+    </tr>
+  </table>
+</div>
 
 
 
