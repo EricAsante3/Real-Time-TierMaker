@@ -1,7 +1,7 @@
 # Real-Time Multiplayer Tier List Document Editor
 
 <div style="text-align: center;">
-  <table width="100%" height="500px" style="margin: 0 auto;">
+  <table width="100%" style="margin: 0 auto;">
     <tr>
       <td style="vertical-align: top; width: 40%; height: "100%"; text-align: center;">
         <img src="screenshots/NameSelectScreen.png" width="700" /><br/>
