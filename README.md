@@ -1,0 +1,50 @@
+# Real-Time Multiplayer Tier List Document Editor
+
+<table width="100%">
+  <tr>
+    <td style="vertical-align: top; width: 40%;">
+      <img src="screenshots/collab1.png" width="200" /><br/>
+      <img src="screenshots/collab2.png" width="200" />
+    </td>
+    <td style="vertical-align: top; width: 60%; padding-left: 20px;">
+      <img src="screenshots/collab3.png" width="420" />
+    </td>
+  </tr>
+</table>
+Modern real-time collaborative web application that allows multiple users to edit a tier lists document simultaneously. Tech stack including **Next.js** for the frontend and **.NET SignalR** for real-time backend communication, it mimics the live-editing capabilities of tools like Google Docs — but tailored for tier list enthusiasts and communities.
+
+---
+
+## ⚙️ Features
+
+- 🧑‍🤝‍🧑 Real-time multi-user editing
+- ✏️ Drag-and-drop interface for easy tier management
+- 🔒 User session handling without login
+- 📶 Real time data transfer using WebSocket-based backend (.NET SignalR)
+- 🛡️ Conflict resolution logic for simultaneous edits
+
+---
+
+## 🧠 How It Works
+
+1. Users open the tier list editor in their browser.
+2. Each user is assigned a temporary session.
+3. Edits are instantly broadcast to all connected users via **SignalR**.
+4. The app maintains and updates the shared document state live.
+
+---
+
+## 🐳 Local Setup Using Docker
+
+You can run the full app locally using Docker. This setup includes both frontend and backend services. Run the following command from the root project folder and go to app URL.
+
+### 1. Build the Docker Images
+
+```bash
+docker compose up
+```
+
+### 2. Access application
+```bash
+http://localhost:3000/
+```
