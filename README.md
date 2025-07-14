@@ -8,7 +8,7 @@
         <img src="screenshots/AvatarSelectScreen.png" width="700" />
       </td>
         <td style="vertical-align: top; width: 60%; height: "100%"; padding-left: 20px; text-align: center;">
-        <img src="screenshots/GameScreen.png" width="920" />
+        <img src="screenshots/GameScreen.jpg" width="920" />
         </td>
     </tr>
   </table>
