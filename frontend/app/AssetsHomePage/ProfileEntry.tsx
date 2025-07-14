@@ -183,12 +183,12 @@ export default function ProfileEntry({setavatar}: info) {
                 <div className='flex flex-row  items-center w-full justify-evenly  space-x-12'>
                   <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 2, duration: 1,ease: "easeOut",}} className='flex flex-col items-center justify-center space-y-2'>
                     <div className="w-32 h-32 rounded-full bg-[linear-gradient(135deg,_#FF6B6B,_#6A82FB,_#F9ED69)]"  />
-                    <figcaption className='tracking-widest font-serif  text-lg'>Mr.FoldAlot - aka Joel</figcaption>
+                    <figcaption className='tracking-widest font-serif  text-lg'>Locked:  Mr.FoldAlot</figcaption>
 
                   </motion.figure>
 
                   <motion.figure initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{delay: 2.5, duration: 1,ease: "easeOut",}} className='flex flex-col items-center justify-center space-y-2'>
-                    <div className="w-32 h-32 rounded-full border border-white"  />
+                    <div className="w-32 h-32 rounded-full border border-white bg-[linear-gradient(135deg,_#FF636B,_#6A12FB,_#F2ED69)]"  />
                     <figcaption className='tracking-widest font-serif  text-lg'>Locked: Germain</figcaption>
                   </motion.figure>
                 </div>
